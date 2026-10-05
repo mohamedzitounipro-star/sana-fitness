@@ -1,0 +1,6 @@
+{
+  "name": "Fitness Park Tour de France",
+  "description": "Carnet de bord et carte interactive des Fitness Park visités à travers la France.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
