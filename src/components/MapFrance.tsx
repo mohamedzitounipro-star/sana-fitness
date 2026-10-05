@@ -43,16 +43,25 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       minZoom: 3,
       maxZoom: 18,
       zoomControl: false,
+      attributionControl: false,
+      preferCanvas: true,
+      fadeAnimation: true,
+      zoomAnimation: true,
+      markerZoomAnimation: true,
+      inertia: true,
+      inertiaDeceleration: 3000,
+      inertiaMaxSpeed: 2000,
+      bounceAtZoomLimits: false,
+      wheelDebounceTime: 40,
     });
-
-    L.control.zoom({ position: 'topleft' }).addTo(map);
 
     // 1. High-resolution HD Satellite Imagery from Esri
     const satelliteBase = L.tileLayer(
       'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       {
-        attribution: '&copy; Esri World Imagery',
         maxZoom: 19,
+        keepBuffer: 3,
+        updateWhenIdle: true,
       }
     );
 
@@ -60,9 +69,10 @@ export const MapFrance: React.FC<MapFranceProps> = ({
     const labelsOverlay = L.tileLayer(
       'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
       {
-        attribution: '',
         maxZoom: 19,
         opacity: 0.95,
+        keepBuffer: 3,
+        updateWhenIdle: true,
       }
     );
 
@@ -71,8 +81,9 @@ export const MapFrance: React.FC<MapFranceProps> = ({
 
     // 3. Plan layer
     const planLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap',
       maxZoom: 19,
+      keepBuffer: 3,
+      updateWhenIdle: true,
     });
     const planGroup = L.layerGroup([planLayer]);
     planGroupRef.current = planGroup;
@@ -138,14 +149,15 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       );
 
       if (!isVisited) {
-        const dotIcon = L.divIcon({
-          className: 'unvisited-dot',
-          html: `<div class="w-3.5 h-3.5 rounded-full bg-white/80 border-2 border-slate-900 shadow-md hover:scale-150 hover:bg-amber-400 transition-all cursor-pointer"></div>`,
-          iconSize: [14, 14],
-          iconAnchor: [7, 7],
+        const marker = L.circleMarker([club.lat, club.lng], {
+          radius: 6,
+          fillColor: '#ffffff',
+          color: '#0f172a',
+          weight: 2,
+          opacity: 0.95,
+          fillOpacity: 0.85,
         });
 
-        const marker = L.marker([club.lat, club.lng], { icon: dotIcon });
         marker.bindTooltip(
           `<div class="font-medium text-xs">${escapeHtml(club.name)}</div><div class="text-[10px] text-amber-600 font-semibold">Toucher pour ajouter</div>`,
           { direction: 'top', offset: [0, -6], opacity: 0.95 }

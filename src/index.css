@@ -15,21 +15,32 @@
 .leaflet-container {
   width: 100% !important;
   height: 100% !important;
-  background-color: #f1f5f9 !important;
+  background-color: #0b0f19 !important;
   font-family: inherit;
   outline: none;
   z-index: 1;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
-/* Leaflet Tile Layer */
-.leaflet-tile {
-  filter: saturate(1.1) brightness(1.02);
+.leaflet-tile-container {
+  will-change: transform;
 }
 
 /* Custom Pin Style */
 .map-pin {
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
 }
 .map-pin:hover {
   transform: scale(1.15) translateY(-4px);
+}
+
+/* Hide any Leaflet zoom controls or attributions completely */
+.leaflet-control-zoom,
+.leaflet-control-attribution {
+  display: none !important;
 }
