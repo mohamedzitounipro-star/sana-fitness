@@ -80,7 +80,7 @@ export default function App() {
   };
 
   return (
-    <div className="fixed inset-0 w-full h-full overflow-hidden bg-neutral-950">
+    <div className="fixed inset-0 w-full h-[100dvh] overflow-hidden bg-slate-50">
       {/* 1. Fullscreen Map is the main canvas */}
       <MapFrance
         visitedGyms={gyms}
@@ -93,8 +93,13 @@ export default function App() {
         selectedGymId={selectedGym?.id}
       />
 
-      {/* 2. Floating Top Header with Gaming Progress */}
-      <header className="absolute top-3 sm:top-4 left-3 sm:left-4 right-3 sm:right-4 z-[1500] flex items-center justify-between pointer-events-none">
+      {/* 2. Floating Top Header with Gaming Progress (Positioned safely below Dynamic Island / Notch) */}
+      <header
+        className="absolute top-0 left-0 right-0 z-[1500] px-3.5 sm:px-5 flex items-center justify-between pointer-events-none"
+        style={{
+          paddingTop: 'calc(env(safe-area-inset-top, 44px) + 12px)',
+        }}
+      >
         {/* Gaming Stat Widget in Header */}
         <button
           onClick={() => setIsStatsModalOpen(true)}
@@ -133,11 +138,17 @@ export default function App() {
         </div>
       </header>
 
-      {/* 3. Bottom Area */}
-      <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-1.5rem)] max-w-md z-[1500] pointer-events-none flex flex-col items-center gap-2.5">
-        {/* If a Gym is selected from the map, show its details card */}
-        {selectedGym ? (
-          <div className="w-full bg-white/98 backdrop-blur-md p-4 sm:p-5 rounded-3xl shadow-2xl border border-neutral-200 pointer-events-auto space-y-3 animate-in slide-in-from-bottom duration-200">
+      {/* 3. Bottom Area with safe area for iPhone home indicator */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-[1500] pointer-events-none flex flex-col items-center px-4"
+        style={{
+          paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 12px)',
+        }}
+      >
+        <div className="w-full max-w-md pointer-events-auto flex flex-col items-center gap-2.5">
+          {/* If a Gym is selected from the map, show its details card */}
+          {selectedGym ? (
+            <div className="w-full bg-white/98 backdrop-blur-md p-4 sm:p-5 rounded-3xl shadow-2xl border border-neutral-200 pointer-events-auto space-y-3 animate-in slide-in-from-bottom duration-200">
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 font-medium mb-0.5">
@@ -232,6 +243,7 @@ export default function App() {
           </button>
         </div>
       </div>
+    </div>
 
       {/* 4. Natural Add/Edit Modal */}
       <AddGymModal
