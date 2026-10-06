@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import { VisitedGym, FitnessParkClub } from './types';
 import { getSavedGyms, saveGyms } from './utils/storage';
 import { computePlayerStats } from './utils/stats';
@@ -66,6 +67,16 @@ export default function App() {
       const updated = [newGym, ...gyms];
       updateGyms(updated);
       setSelectedGym(newGym);
+      try {
+        confetti({
+          particleCount: 50,
+          spread: 70,
+          origin: { y: 0.65 },
+          colors: ['#f59e0b', '#fbbf24', '#ffffff', '#f97316'],
+        });
+      } catch {
+        // Safe confetti fallback
+      }
     }
     setEditingGym(null);
     setPreselectedClub(null);
