@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { VisitedGym, FitnessParkClub } from '../types';
 import { FITNESS_PARK_DIRECTORY } from '../data/fitnessParkDirectory';
-import { Navigation, Loader2, Layers } from 'lucide-react';
+import { Navigation, Loader2 } from 'lucide-react';
 import { escapeHtml } from '../utils/geo';
 
 interface MapFranceProps {
@@ -24,11 +24,6 @@ export const MapFrance: React.FC<MapFranceProps> = ({
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const userLocationMarkerRef = useRef<L.Marker | null>(null);
 
-  // Layers (Zero API Key needed, 100% stable & fast)
-  const satelliteGroupRef = useRef<L.LayerGroup | null>(null);
-  const planLayerRef = useRef<L.TileLayer | null>(null);
-
-  const [mapMode, setMapMode] = useState<'satellite' | 'plan'>('satellite');
   const [zoomLevel, setZoomLevel] = useState(6);
   const [isLocating, setIsLocating] = useState(false);
   const [geoMessage, setGeoMessage] = useState<string | null>(null);
@@ -37,12 +32,12 @@ export const MapFrance: React.FC<MapFranceProps> = ({
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
-    // Centered on France
+    // Centered on France with ultra-smooth 60 FPS inertia
     const map = L.map(mapContainerRef.current, {
       center: [46.7, 2.3],
       zoom: 6,
       minZoom: 3,
-      maxZoom: 19,
+      maxZoom: 20,
       zoomControl: false,
       attributionControl: false,
       preferCanvas: true,
@@ -50,54 +45,37 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       zoomAnimation: true,
       markerZoomAnimation: true,
       inertia: true,
-      inertiaDeceleration: 3000,
-      inertiaMaxSpeed: 2000,
+      inertiaDeceleration: 2500,
+      inertiaMaxSpeed: 1500,
+      zoomSnap: 0.5,
+      zoomDelta: 0.5,
+      wheelPxPerZoomLevel: 60,
       bounceAtZoomLimits: false,
-      wheelDebounceTime: 40,
     });
 
-    // 1. Satellite HD: Esri World Imagery + Clean Labels (Zero API Key)
-    const satBase = L.tileLayer(
-      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    // Pure High-Definition Satellite Imagery + Crisp Labels (Google Maps Hybrid CDN - 0 API Key)
+    const googleSatellite = L.tileLayer(
+      'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
       {
-        maxZoom: 19,
-        keepBuffer: 3,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+        maxZoom: 20,
+        keepBuffer: 6,
         updateWhenIdle: true,
+        updateWhenZooming: false,
       }
     );
-    const satLabels = L.tileLayer(
-      'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-      {
-        maxZoom: 19,
-        opacity: 0.85,
-        keepBuffer: 3,
-        updateWhenIdle: true,
-      }
-    );
-    const satelliteGroup = L.layerGroup([satBase, satLabels]);
-    satelliteGroupRef.current = satelliteGroup;
-
-    // 2. Plan Mode: OpenStreetMap (Zero API Key)
-    const planLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      keepBuffer: 3,
-      updateWhenIdle: true,
-    });
-    planLayerRef.current = planLayer;
-
-    // Default: Satellite HD
-    satelliteGroup.addTo(map);
+    googleSatellite.addTo(map);
 
     const markersGroup = L.layerGroup().addTo(map);
     markersLayerRef.current = markersGroup;
     mapInstanceRef.current = map;
 
-    // Track zoom for clean marker sizing
+    // Track zoom for responsive marker sizing
     map.on('zoomend', () => {
       setZoomLevel(map.getZoom());
     });
 
-    // Handle resize & mobile orientation changes
+    // Handle resize & mobile orientation changes smoothly
     const handleResize = () => {
       map.invalidateSize();
     };
@@ -122,24 +100,6 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       mapInstanceRef.current = null;
     };
   }, []);
-
-  // Toggle Satellite <-> Plan Mode
-  const handleToggleMode = () => {
-    const map = mapInstanceRef.current;
-    const sat = satelliteGroupRef.current;
-    const plan = planLayerRef.current;
-    if (!map || !sat || !plan) return;
-
-    if (mapMode === 'satellite') {
-      map.removeLayer(sat);
-      map.addLayer(plan);
-      setMapMode('plan');
-    } else {
-      map.removeLayer(plan);
-      map.addLayer(sat);
-      setMapMode('satellite');
-    }
-  };
 
   // Render Markers
   useEffect(() => {
@@ -294,14 +254,13 @@ export const MapFrance: React.FC<MapFranceProps> = ({
         </div>
       )}
 
-      {/* 2 Clean Floating Map Controls on right: Exactly like before */}
+      {/* Single Clean Floating GPS Button on right (No extra buttons) */}
       <div 
         className="absolute right-3.5 sm:right-5 z-[1400] flex flex-col gap-2.5"
         style={{
           top: 'max(calc(env(safe-area-inset-top, 0px) + 90px), 140px)',
         }}
       >
-        {/* Button 1: Geolocation */}
         <button
           onClick={handleGeolocate}
           disabled={isLocating}
@@ -313,15 +272,6 @@ export const MapFrance: React.FC<MapFranceProps> = ({
           ) : (
             <Navigation className="w-4 h-4 text-neutral-900 group-hover:text-amber-500 transition-colors" />
           )}
-        </button>
-
-        {/* Button 2: Satellite / Plan Mode Switcher */}
-        <button
-          onClick={handleToggleMode}
-          className="p-3 bg-white/95 text-neutral-800 rounded-2xl shadow-xl border border-neutral-200/80 hover:bg-white transition-all flex items-center justify-center cursor-pointer active:scale-95 backdrop-blur-md"
-          title={mapMode === 'satellite' ? 'Passer en vue Plan' : 'Passer en vue Satellite HD'}
-        >
-          <Layers className="w-4 h-4 text-neutral-700" />
         </button>
       </div>
     </div>

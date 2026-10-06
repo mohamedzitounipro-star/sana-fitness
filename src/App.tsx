@@ -111,29 +111,18 @@ export default function App() {
           paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 24px), 72px)',
         }}
       >
-        {/* Gaming Stat Widget in Header */}
+        {/* Gaming Stat Widget in Header (Compact and narrower) */}
         <button
           onClick={() => setIsStatsModalOpen(true)}
-          className="bg-white/98 backdrop-blur-md px-3.5 sm:px-4 py-2.5 rounded-2xl shadow-xl border border-neutral-200/90 flex items-center gap-2.5 pointer-events-auto hover:bg-white transition-all cursor-pointer group text-left active:scale-98"
+          className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-neutral-200/90 flex items-center gap-2 pointer-events-auto hover:bg-white transition-all cursor-pointer group active:scale-95"
           title="Voir les détails de progression"
         >
-          <div className="w-8 h-8 rounded-xl bg-neutral-950 text-amber-400 font-black text-[10px] flex flex-col items-center justify-center leading-none border border-neutral-800 shadow-xs shrink-0">
-            <span>NV.{stats.level}</span>
+          <div className="w-7 h-7 rounded-xl bg-neutral-950 text-amber-400 font-black text-[10px] flex items-center justify-center border border-neutral-800 shadow-xs shrink-0">
+            NV.{stats.level}
           </div>
-          <div className="min-w-[95px] sm:min-w-[110px]">
-            <div className="flex items-center justify-between text-[11px] font-extrabold text-neutral-900 leading-tight">
-              <span>{stats.unlockedCount} / {stats.totalClubs}</span>
-              <span className="text-amber-500 font-black text-[10px]">{stats.percentage}%</span>
-            </div>
-            <div className="text-[10px] text-neutral-400 font-medium mb-1">
-              débloqués
-            </div>
-            <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-amber-400 rounded-full transition-all duration-300"
-                style={{ width: `${Math.max(stats.percentage, stats.unlockedCount > 0 ? 4 : 0)}%` }}
-              />
-            </div>
+          <div className="flex items-center gap-1.5 text-xs font-black text-neutral-900 pr-1">
+            <span>{stats.unlockedCount} / {stats.totalClubs}</span>
+            <span className="text-amber-500 font-bold text-[11px]">({stats.percentage}%)</span>
           </div>
         </button>
 
