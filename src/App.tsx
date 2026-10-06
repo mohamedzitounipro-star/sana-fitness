@@ -95,15 +95,15 @@ export default function App() {
 
       {/* 2. Floating Top Header with Gaming Progress (Positioned safely below Dynamic Island / Notch) */}
       <header
-        className="absolute top-0 left-0 right-0 z-[1500] px-3.5 sm:px-5 flex items-center justify-between pointer-events-none"
+        className="absolute top-0 left-0 right-0 z-[1500] px-4 sm:px-6 flex items-center justify-between pointer-events-none"
         style={{
-          paddingTop: 'calc(env(safe-area-inset-top, 44px) + 12px)',
+          paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 24px), 72px)',
         }}
       >
         {/* Gaming Stat Widget in Header */}
         <button
           onClick={() => setIsStatsModalOpen(true)}
-          className="bg-white/98 backdrop-blur-md px-3 sm:px-3.5 py-2 rounded-2xl shadow-xl border border-neutral-200/90 flex items-center gap-2.5 pointer-events-auto hover:bg-white transition-all cursor-pointer group text-left active:scale-98"
+          className="bg-white/98 backdrop-blur-md px-3.5 sm:px-4 py-2.5 rounded-2xl shadow-xl border border-neutral-200/90 flex items-center gap-2.5 pointer-events-auto hover:bg-white transition-all cursor-pointer group text-left active:scale-98"
           title="Voir les détails de progression"
         >
           <div className="w-8 h-8 rounded-xl bg-neutral-950 text-amber-400 font-black text-[10px] flex flex-col items-center justify-center leading-none border border-neutral-800 shadow-xs shrink-0">
@@ -129,7 +129,7 @@ export default function App() {
         <div className="flex items-center gap-2 pointer-events-auto">
           <button
             onClick={() => setIsDrawerOpen(true)}
-            className="p-2.5 sm:px-3.5 bg-white/98 backdrop-blur-md rounded-2xl shadow-xl border border-neutral-200/90 text-neutral-800 hover:text-black hover:bg-white transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95"
+            className="p-3 sm:px-4 bg-white/98 backdrop-blur-md rounded-2xl shadow-xl border border-neutral-200/90 text-neutral-800 hover:text-black hover:bg-white transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95"
             title="Voir la liste"
           >
             <List className="w-4 h-4 text-neutral-900" />
@@ -142,10 +142,10 @@ export default function App() {
       <div
         className="absolute bottom-0 left-0 right-0 z-[1500] pointer-events-none flex flex-col items-center px-4"
         style={{
-          paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 12px)',
+          paddingBottom: 'max(calc(env(safe-area-inset-bottom, 0px) + 20px), 32px)',
         }}
       >
-        <div className="w-full max-w-md pointer-events-auto flex flex-col items-center gap-2.5">
+        <div className="w-full max-w-sm sm:max-w-md pointer-events-auto flex flex-col items-center gap-2.5">
           {/* If a Gym is selected from the map, show its details card */}
           {selectedGym ? (
             <div className="w-full bg-white/98 backdrop-blur-md p-4 sm:p-5 rounded-3xl shadow-2xl border border-neutral-200 pointer-events-auto space-y-3 animate-in slide-in-from-bottom duration-200">

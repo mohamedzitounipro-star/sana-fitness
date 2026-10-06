@@ -3,14 +3,14 @@
   "name": "Fitness Park Tour de France",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%23f59e0b'/><path d='M30 40h40v20H30z' fill='%230a0a0a'/><path d='M22 34h8v32h-8zM70 34h8v32h-8z' fill='%230a0a0a'/></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23f97316'/><path d='M50 20C36.7 20 26 30.7 26 44c0 18 24 36 24 36s24-18 24-36c0-13.3-10.7-24-24-24zm0 33a9 9 0 1 1 0-18 9 9 0 0 1 0 18z' fill='%23ffffff'/></svg>",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml"
     }
   ],
   "start_url": "/",
   "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "theme_color": "#f97316",
   "display": "standalone",
   "orientation": "portrait"
 }
