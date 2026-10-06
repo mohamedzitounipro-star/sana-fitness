@@ -45,23 +45,21 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       zoomAnimation: true,
       markerZoomAnimation: true,
       inertia: true,
-      inertiaDeceleration: 2500,
-      inertiaMaxSpeed: 1500,
-      zoomSnap: 0.5,
-      zoomDelta: 0.5,
-      wheelPxPerZoomLevel: 60,
+      inertiaDeceleration: 3000,
+      inertiaMaxSpeed: 2000,
       bounceAtZoomLimits: false,
     });
 
-    // Pure High-Definition Satellite Imagery + Crisp Labels (Google Maps Hybrid CDN - 0 API Key)
+    // 4X Ultra High-Definition Retina Satellite Imagery (Google Maps Hybrid scale=2 + 4x CDN + Pre-buffering)
     const googleSatellite = L.tileLayer(
-      'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+      'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2',
       {
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
         maxZoom: 20,
-        keepBuffer: 6,
-        updateWhenIdle: true,
-        updateWhenZooming: false,
+        tileSize: 256,
+        keepBuffer: 12,
+        updateWhenIdle: false,
+        updateInterval: 30,
       }
     );
     googleSatellite.addTo(map);
@@ -121,14 +119,14 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       );
 
       if (!isVisited) {
-        // Delicate points when zoomed out, clear touchable buttons when zoomed in
+        // Always vibrant orange with crisp white outline for satellite contrast
         const marker = L.circleMarker([club.lat, club.lng], {
-          radius: isZoomedOut ? 3.5 : 6,
-          fillColor: isZoomedOut ? '#fbbf24' : '#ffffff',
-          color: isZoomedOut ? '#b45309' : '#0f172a',
-          weight: isZoomedOut ? 1 : 2,
-          opacity: isZoomedOut ? 0.75 : 0.95,
-          fillOpacity: isZoomedOut ? 0.8 : 0.9,
+          radius: isZoomedOut ? 3.5 : 6.5,
+          fillColor: '#f97316',
+          color: '#ffffff',
+          weight: isZoomedOut ? 1.5 : 2,
+          opacity: 0.95,
+          fillOpacity: 0.95,
         });
 
         marker.bindTooltip(
