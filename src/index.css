@@ -9,7 +9,7 @@
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #f8fafc;
+    background-color: #0b1120;
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-tap-highlight-color: transparent;
   }
@@ -20,7 +20,7 @@
   width: 100% !important;
   height: 100% !important;
   height: 100dvh !important;
-  background-color: #050811 !important;
+  background-color: #0b1120 !important;
   font-family: inherit;
   outline: none;
   z-index: 1;
