@@ -3,14 +3,14 @@
   "name": "Sana Map - Fitness Park Tour",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ff5a1f'/><text x='50' y='69' font-family='-apple-system, BlinkMacSystemFont, sans-serif' font-weight='900' font-size='56' fill='%23ffffff' text-anchor='middle'>S</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ea580c'/><text x='50' y='69' font-family='-apple-system, BlinkMacSystemFont, sans-serif' font-weight='900' font-size='56' fill='%23ffffff' text-anchor='middle'>S</text></svg>",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml"
     }
   ],
   "start_url": "/",
   "background_color": "#090d16",
-  "theme_color": "#ff5a1f",
+  "theme_color": "#ea580c",
   "display": "standalone",
   "orientation": "portrait"
 }

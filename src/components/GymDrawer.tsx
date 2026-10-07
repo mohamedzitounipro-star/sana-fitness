@@ -64,7 +64,7 @@ export const GymDrawer: React.FC<GymDrawerProps> = ({
                 </div>
 
                 <div className="flex items-center gap-1.5 text-[11px] text-neutral-500">
-                  <MapPin className="w-3 h-3 text-amber-500 shrink-0" />
+                  <MapPin className="w-3 h-3 text-[#ea580c] shrink-0" />
                   <span>{gym.city}</span>
                   <span>•</span>
                   <span>{new Date(gym.visitDate).toLocaleDateString('fr-FR')}</span>

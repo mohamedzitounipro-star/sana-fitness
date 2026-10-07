@@ -24,7 +24,6 @@ export const MapFrance: React.FC<MapFranceProps> = ({
   const markersLayerRef = useRef<L.LayerGroup | null>(null);
   const userLocationMarkerRef = useRef<L.Marker | null>(null);
 
-  const [zoomLevel, setZoomLevel] = useState(6);
   const [showAllClubs, setShowAllClubs] = useState(true);
   const [isLocating, setIsLocating] = useState(false);
   const [geoMessage, setGeoMessage] = useState<string | null>(null);
@@ -85,20 +84,12 @@ export const MapFrance: React.FC<MapFranceProps> = ({
     map.invalidateSize();
     requestAnimationFrame(() => map.invalidateSize());
 
-    // Track zoom for responsive marker sizing
-    map.on('zoomend', () => {
-      setZoomLevel(map.getZoom());
-    });
-
-    // Handle resize & mobile orientation changes smoothly
+    // Native resize observer handles mobile orientation & resize with 0 overhead
     const handleResize = () => {
       map.invalidateSize();
     };
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
-
-    const timer1 = setTimeout(() => map.invalidateSize(), 150);
-    const timer2 = setTimeout(() => map.invalidateSize(), 450);
 
     const resizeObserver = new ResizeObserver(() => {
       map.invalidateSize();
@@ -108,8 +99,6 @@ export const MapFrance: React.FC<MapFranceProps> = ({
     return () => {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
-      clearTimeout(timer1);
-      clearTimeout(timer2);
       clearTimeout(splashTimer);
       resizeObserver.disconnect();
       map.remove();
@@ -275,8 +264,8 @@ export const MapFrance: React.FC<MapFranceProps> = ({
         }`}
       >
         <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in-95 duration-300">
-          {/* Minimalist Smooth Matte Orange S Monogram */}
-          <div className="w-16 h-16 rounded-2xl bg-[#ff5a1f] flex items-center justify-center text-white font-black text-3xl tracking-tight shadow-xl shadow-[#ff5a1f]/20 select-none">
+          {/* Minimalist Smooth Matte Soft Orange S Monogram */}
+          <div className="w-16 h-16 rounded-2xl bg-[#ea580c] flex items-center justify-center text-white font-black text-3xl tracking-tight shadow-xl shadow-[#ea580c]/15 select-none">
             S
           </div>
           <div className="flex flex-col items-center gap-1">
@@ -289,7 +278,7 @@ export const MapFrance: React.FC<MapFranceProps> = ({
           </div>
           {/* Subtle minimal loading indicator */}
           <div className="w-20 h-0.5 bg-neutral-800 rounded-full overflow-hidden mt-1">
-            <div className="h-full bg-[#ff5a1f] w-full animate-pulse rounded-full" />
+            <div className="h-full bg-[#ea580c] w-full animate-pulse rounded-full" />
           </div>
         </div>
       </div>
@@ -319,9 +308,9 @@ export const MapFrance: React.FC<MapFranceProps> = ({
           title="Me géolocaliser"
         >
           {isLocating ? (
-            <Loader2 className="w-4 h-4 text-amber-500 animate-spin" />
+            <Loader2 className="w-4 h-4 text-[#ea580c] animate-spin" />
           ) : (
-            <Navigation className="w-4 h-4 text-neutral-900 group-hover:text-amber-500 transition-colors" />
+            <Navigation className="w-4 h-4 text-neutral-900 group-hover:text-[#ea580c] transition-colors" />
           )}
         </button>
 
@@ -335,15 +324,15 @@ export const MapFrance: React.FC<MapFranceProps> = ({
           }}
           className={`p-3 rounded-2xl shadow-xl border transition-all flex items-center justify-center cursor-pointer active:scale-95 backdrop-blur-md group ${
             showAllClubs
-              ? 'bg-amber-400 text-neutral-950 border-amber-300 shadow-amber-400/20'
-              : 'bg-white/95 text-neutral-500 border-neutral-200/80 hover:text-neutral-900'
+              ? 'bg-[#ea580c] text-white border-[#ea580c]/80 shadow-[#ea580c]/15'
+              : 'bg-white/95 text-neutral-400 border-neutral-200/80 hover:text-neutral-900'
           }`}
           title={showAllClubs ? 'Afficher uniquement mes salles débloquées' : 'Afficher tous les clubs du réseau'}
         >
           {showAllClubs ? (
-            <Eye className="w-4 h-4 text-neutral-950" />
+            <Eye className="w-4 h-4 text-white" />
           ) : (
-            <EyeOff className="w-4 h-4 text-neutral-500 group-hover:text-neutral-900" />
+            <EyeOff className="w-4 h-4 text-neutral-400 group-hover:text-neutral-900" />
           )}
         </button>
       </div>

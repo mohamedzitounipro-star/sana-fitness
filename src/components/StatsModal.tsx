@@ -29,7 +29,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({ isOpen, onClose, stats }
         <div className="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-400 text-neutral-950 font-black text-xs flex items-center justify-center shadow-xs">
+              <div className="w-10 h-10 rounded-xl bg-[#ea580c] text-white font-black text-xs flex items-center justify-center shadow-xs">
                 NIV.{stats.level}
               </div>
               <div>
@@ -41,18 +41,18 @@ export const StatsModal: React.FC<StatsModalProps> = ({ isOpen, onClose, stats }
                 </div>
               </div>
             </div>
-            <Trophy className="w-5 h-5 text-amber-500" />
+            <Trophy className="w-5 h-5 text-[#ea580c]" />
           </div>
 
           {/* Progress Bar */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-[11px] font-semibold text-neutral-600">
               <span>{stats.unlockedCount} / {stats.totalClubs} débloqués</span>
-              <span className="text-amber-500 font-bold">{stats.percentage}%</span>
+              <span className="text-[#ea580c] font-bold">{stats.percentage}%</span>
             </div>
             <div className="h-2 w-full bg-neutral-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-amber-400 rounded-full transition-all duration-300"
+                className="h-full bg-[#ea580c] rounded-full transition-all duration-300"
                 style={{ width: `${Math.max(stats.percentage, stats.unlockedCount > 0 ? 3 : 0)}%` }}
               />
             </div>
@@ -63,7 +63,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({ isOpen, onClose, stats }
         <div className="grid grid-cols-2 gap-2.5 text-xs">
           <div className="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-3.5 space-y-1">
             <div className="flex items-center gap-1.5 text-neutral-500 font-medium">
-              <Compass className="w-3.5 h-3.5 text-amber-500" />
+              <Compass className="w-3.5 h-3.5 text-[#ea580c]" />
               <span>Régions</span>
             </div>
             <div className="text-lg font-bold text-neutral-900">
@@ -73,7 +73,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({ isOpen, onClose, stats }
 
           <div className="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-3.5 space-y-1">
             <div className="flex items-center gap-1.5 text-neutral-500 font-medium">
-              <MapPin className="w-3.5 h-3.5 text-amber-500" />
+              <MapPin className="w-3.5 h-3.5 text-[#ea580c]" />
               <span>Villes</span>
             </div>
             <div className="text-lg font-bold text-neutral-900">
@@ -83,7 +83,7 @@ export const StatsModal: React.FC<StatsModalProps> = ({ isOpen, onClose, stats }
 
           <div className="bg-neutral-50 border border-neutral-200/80 rounded-2xl p-3.5 space-y-1 col-span-2">
             <div className="flex items-center gap-1.5 text-neutral-500 font-medium">
-              <Route className="w-3.5 h-3.5 text-amber-500" />
+              <Route className="w-3.5 h-3.5 text-[#ea580c]" />
               <span>Distance cumulée du Tour</span>
             </div>
             <div className="text-xl font-bold text-neutral-900 flex items-baseline gap-1">

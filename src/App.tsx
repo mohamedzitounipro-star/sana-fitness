@@ -114,18 +114,18 @@ export default function App() {
           paddingTop: 'max(calc(env(safe-area-inset-top, 0px) + 24px), 72px)',
         }}
       >
-        {/* Gaming Stat Widget in Header (Compact and narrower) */}
+        {/* Gaming Stat Widget in Header (Compact and narrower with soft orange level background) */}
         <button
           onClick={() => setIsStatsModalOpen(true)}
           className="bg-white/95 backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-neutral-200/90 flex items-center gap-2 pointer-events-auto hover:bg-white transition-all cursor-pointer group active:scale-95"
           title="Voir les détails de progression"
         >
-          <div className="w-7 h-7 rounded-xl bg-neutral-950 text-amber-400 font-black text-[10px] flex items-center justify-center border border-neutral-800 shadow-xs shrink-0">
+          <div className="w-7 h-7 rounded-xl bg-[#ea580c] text-white font-black text-[10px] flex items-center justify-center shadow-xs shrink-0">
             NV.{stats.level}
           </div>
           <div className="flex items-center gap-1.5 text-xs font-black text-neutral-900 pr-1">
             <span>{stats.unlockedCount} / {stats.totalClubs}</span>
-            <span className="text-amber-500 font-bold text-[11px]">({stats.percentage}%)</span>
+            <span className="text-[#ea580c] font-bold text-[11px]">({stats.percentage}%)</span>
           </div>
         </button>
 
@@ -155,7 +155,7 @@ export default function App() {
             <div className="flex items-start justify-between gap-2">
               <div>
                 <div className="flex items-center gap-1.5 text-[11px] text-neutral-500 font-medium mb-0.5">
-                  <MapPin className="w-3.5 h-3.5 text-amber-500" />
+                  <MapPin className="w-3.5 h-3.5 text-[#ea580c]" />
                   <span>{selectedGym.city}</span>
                   <span>•</span>
                   <span>{new Date(selectedGym.visitDate).toLocaleDateString('fr-FR')}</span>
@@ -226,7 +226,7 @@ export default function App() {
           </div>
         ) : null}
 
-        {/* Big Natural Add Button */}
+        {/* Harmonized White Add Button */}
         <div className="flex justify-center pointer-events-auto w-full sm:w-auto">
           <button
             type="button"
@@ -237,10 +237,10 @@ export default function App() {
               setPreselectedClub(null);
               setIsAddModalOpen(true);
             }}
-            className="w-full sm:w-auto px-7 py-3.5 bg-neutral-950 hover:bg-neutral-900 text-white font-extrabold text-sm rounded-full shadow-2xl transition-all flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer border border-neutral-800"
+            className="w-full sm:w-auto px-6 py-3.5 bg-white/98 hover:bg-white text-neutral-900 font-extrabold text-sm rounded-full shadow-2xl transition-all flex items-center justify-center gap-2.5 active:scale-95 cursor-pointer border border-neutral-200/80 backdrop-blur-md"
           >
-            <div className="w-6 h-6 rounded-full bg-amber-400 text-neutral-950 flex items-center justify-center font-bold text-sm">
-              <Plus className="w-4 h-4 stroke-[3]" />
+            <div className="w-6 h-6 rounded-full bg-[#ea580c] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+              <Plus className="w-3.5 h-3.5 stroke-[3]" />
             </div>
             <span>Débloquer une salle</span>
           </button>
