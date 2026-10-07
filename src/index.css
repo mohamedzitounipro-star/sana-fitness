@@ -31,7 +31,22 @@
   touch-action: none;
 }
 
+/* Eradicate any grey background in all Leaflet layers, tiles and panes */
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-map-pane,
+.leaflet-layer,
+.leaflet-tile-container,
+.leaflet-tile {
+  background-color: #0b1120 !important;
+  background: #0b1120 !important;
+}
+
 .leaflet-tile-container {
+  will-change: transform;
+}
+
+.leaflet-zoom-animated {
   will-change: transform;
 }
 

@@ -76,28 +76,30 @@ export const GymDrawer: React.FC<GymDrawerProps> = ({
                   </p>
                 )}
 
-                <div className="flex items-center justify-end gap-2 pt-1 border-t border-neutral-100/80">
+                <div className="flex items-center justify-end gap-1.5 pt-1 border-t border-neutral-100/80">
                   <button
+                    type="button"
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       onEditGym(gym);
                     }}
-                    className="p-1.5 text-neutral-400 hover:text-neutral-900 rounded-lg hover:bg-neutral-100 transition-colors"
+                    className="p-2 text-neutral-400 hover:text-neutral-900 rounded-xl hover:bg-neutral-100 active:bg-neutral-200 transition-colors cursor-pointer"
                     title="Modifier"
                   >
-                    <Edit2 className="w-3.5 h-3.5" />
+                    <Edit2 className="w-4 h-4 text-neutral-600" />
                   </button>
                   <button
+                    type="button"
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
-                      if (confirm(`Supprimer ${gym.name} ?`)) {
-                        onDeleteGym(gym.id);
-                      }
+                      onDeleteGym(gym.id);
                     }}
-                    className="p-1.5 text-neutral-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                    className="p-2 text-neutral-400 hover:text-rose-600 rounded-xl hover:bg-rose-50 active:bg-rose-100 transition-colors cursor-pointer"
                     title="Supprimer"
                   >
-                    <Trash2 className="w-3.5 h-3.5" />
+                    <Trash2 className="w-4 h-4 text-rose-500" />
                   </button>
                 </div>
               </div>

@@ -1,16 +1,16 @@
 {
-  "short_name": "Fitness Park",
-  "name": "Fitness Park Tour de France",
+  "short_name": "Sana Map",
+  "name": "Sana Map - Fitness Park Tour",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23f97316'/><path d='M50 20C36.7 20 26 30.7 26 44c0 18 24 36 24 36s24-18 24-36c0-13.3-10.7-24-24-24zm0 33a9 9 0 1 1 0-18 9 9 0 0 1 0 18z' fill='%23ffffff'/></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='%23ff5a1f'/><text x='50' y='69' font-family='-apple-system, BlinkMacSystemFont, sans-serif' font-weight='900' font-size='56' fill='%23ffffff' text-anchor='middle'>S</text></svg>",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml"
     }
   ],
   "start_url": "/",
-  "background_color": "#0a0a0a",
-  "theme_color": "#f97316",
+  "background_color": "#090d16",
+  "theme_color": "#ff5a1f",
   "display": "standalone",
   "orientation": "portrait"
 }

@@ -34,22 +34,26 @@ export const MapFrance: React.FC<MapFranceProps> = ({
   useEffect(() => {
     if (!mapContainerRef.current || mapInstanceRef.current) return;
 
-    // Centered on France with ultra-smooth 60 FPS inertia
+    // Centered on France with ultra-smooth 60 FPS inertia and responsive pinch-zoom
     const map = L.map(mapContainerRef.current, {
       center: [46.7, 2.3],
       zoom: 6,
       minZoom: 3,
-      maxZoom: 20,
+      maxZoom: 19,
       zoomControl: false,
       attributionControl: false,
       preferCanvas: true,
-      fadeAnimation: true,
+      fadeAnimation: true, // Retains parent tile resolution to completely eradicate grey voids during zoom
       zoomAnimation: true,
       markerZoomAnimation: true,
       inertia: true,
       inertiaDeceleration: 3000,
       inertiaMaxSpeed: 2000,
-      bounceAtZoomLimits: false,
+      bounceAtZoomLimits: true,
+      zoomSnap: 0,
+      zoomDelta: 0.5,
+      wheelPxPerZoomLevel: 60,
+      wheelDebounceTime: 20,
     });
 
     // 4X Ultra High-Definition Retina Satellite Imagery (Google Maps Hybrid scale=2 + 4x CDN + Pre-buffering)
@@ -57,21 +61,19 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       'https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2',
       {
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-        maxZoom: 20,
+        maxZoom: 19,
+        maxNativeZoom: 19,
         tileSize: 256,
         keepBuffer: 12,
         updateWhenIdle: false,
-        updateInterval: 30,
+        updateInterval: 10, // Ultra-fast 10ms tile updates
       }
     );
 
-    // Fade out splash once initial satellite view is loaded in GPU memory
-    googleSatellite.once('load', () => {
+    // Keep the personalized "Sana Map" splash visible for ~1.5s for a polished startup experience
+    const splashTimer = setTimeout(() => {
       setIsMapReady(true);
-    });
-    const fallbackTimer = setTimeout(() => {
-      setIsMapReady(true);
-    }, 600);
+    }, 1500);
 
     googleSatellite.addTo(map);
 
@@ -108,22 +110,20 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       window.removeEventListener('orientationchange', handleResize);
       clearTimeout(timer1);
       clearTimeout(timer2);
-      clearTimeout(fallbackTimer);
+      clearTimeout(splashTimer);
       resizeObserver.disconnect();
       map.remove();
       mapInstanceRef.current = null;
     };
   }, []);
 
-  // Render Markers
+  // Render Markers (Decoupled from zoom to maintain 60 FPS camera motion)
   useEffect(() => {
     const map = mapInstanceRef.current;
     const markersGroup = markersLayerRef.current;
     if (!map || !markersGroup) return;
 
     markersGroup.clearLayers();
-
-    const isZoomedOut = zoomLevel < 7.5;
 
     // 1. Unvisited Fitness Parks (Only if showAllClubs is enabled)
     if (showAllClubs) {
@@ -136,12 +136,12 @@ export const MapFrance: React.FC<MapFranceProps> = ({
         );
 
         if (!isVisited) {
-          // Always vibrant orange with crisp white outline for satellite contrast
+          // Vibrant orange with crisp white outline - looks great at all zoom levels
           const marker = L.circleMarker([club.lat, club.lng], {
-            radius: isZoomedOut ? 3.5 : 6.5,
+            radius: 5,
             fillColor: '#f97316',
             color: '#ffffff',
-            weight: isZoomedOut ? 1.5 : 2,
+            weight: 1.5,
             opacity: 0.95,
             fillOpacity: 0.95,
           });
@@ -191,14 +191,21 @@ export const MapFrance: React.FC<MapFranceProps> = ({
 
       markersGroup.addLayer(marker);
     });
+  }, [visitedGyms, selectedGymId, onSelectGym, onQuickAddClub, showAllClubs]);
 
-    if (selectedGymId) {
-      const target = visitedGyms.find((g) => g.id === selectedGymId);
-      if (target) {
-        map.flyTo([target.lat, target.lng], 13, { duration: 0.8 });
-      }
+  // Smooth cinematic camera flight when unlocking or selecting a gym
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map || !selectedGymId) return;
+
+    const target = visitedGyms.find((g) => g.id === selectedGymId);
+    if (target) {
+      map.flyTo([target.lat, target.lng], 14, {
+        duration: 0.55,
+        easeLinearity: 0.25,
+      });
     }
-  }, [visitedGyms, selectedGymId, onSelectGym, onQuickAddClub, zoomLevel, showAllClubs]);
+  }, [selectedGymId, visitedGyms]);
 
   // Geolocation Handler
   const handleGeolocate = () => {
@@ -218,7 +225,8 @@ export const MapFrance: React.FC<MapFranceProps> = ({
         const map = mapInstanceRef.current;
         if (!map) return;
 
-        map.flyTo([latitude, longitude], 14, { duration: 1.2 });
+        // Snappy 250ms direct setView to user GPS location
+        map.setView([latitude, longitude], 14, { animate: true, duration: 0.25 });
 
         if (userLocationMarkerRef.current) {
           map.removeLayer(userLocationMarkerRef.current);
@@ -260,21 +268,29 @@ export const MapFrance: React.FC<MapFranceProps> = ({
       {/* Fullscreen Map Canvas */}
       <div ref={mapContainerRef} className="w-full h-full" />
 
-      {/* Smooth Instant Splash: Eliminates black flash and tile pop-in on mobile */}
+      {/* Smooth Personalized Splash: Sana Map (Minimalist & Matte) */}
       <div
-        className={`absolute inset-0 z-[1800] bg-slate-950 flex flex-col items-center justify-center transition-opacity duration-300 pointer-events-none ${
+        className={`absolute inset-0 z-[1800] bg-[#090d16] flex flex-col items-center justify-center transition-opacity duration-500 pointer-events-none ${
           isMapReady ? 'opacity-0' : 'opacity-100'
         }`}
       >
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-amber-500 text-neutral-950 flex items-center justify-center font-black shadow-xl shadow-amber-500/20 animate-pulse">
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg>
+        <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in-95 duration-300">
+          {/* Minimalist Smooth Matte Orange S Monogram */}
+          <div className="w-16 h-16 rounded-2xl bg-[#ff5a1f] flex items-center justify-center text-white font-black text-3xl tracking-tight shadow-xl shadow-[#ff5a1f]/20 select-none">
+            S
           </div>
-          <span className="text-white text-xs font-bold tracking-wider uppercase opacity-80">
-            Fitness Park Tour
-          </span>
+          <div className="flex flex-col items-center gap-1">
+            <h1 className="text-white text-2xl font-extrabold tracking-tight">
+              Sana Map
+            </h1>
+            <p className="text-neutral-400 text-[11px] font-semibold tracking-widest uppercase">
+              Fitness Park Tour
+            </p>
+          </div>
+          {/* Subtle minimal loading indicator */}
+          <div className="w-20 h-0.5 bg-neutral-800 rounded-full overflow-hidden mt-1">
+            <div className="h-full bg-[#ff5a1f] w-full animate-pulse rounded-full" />
+          </div>
         </div>
       </div>
 
